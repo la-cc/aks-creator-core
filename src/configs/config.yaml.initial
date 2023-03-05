@@ -1,0 +1,10 @@
+---
+# Azure Backend for Terraform related data
+azure_backend: {}
+
+# Azure Kubernetes Cluster related data
+clusters:
+  - name: <valiant>
+    stage: <development>
+    azure_cloud_zone: "<your-domain.de>"
+    node_pools: {}
