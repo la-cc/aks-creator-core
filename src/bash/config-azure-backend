@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -eo pipefail
+export CONTAINER_NAME='tfstate'
 
 ############# functions #################
 
@@ -67,7 +68,7 @@ function azCreateBlobContainer {
 	az storage container create --name $CONTAINER_NAME --account-name "$STORAGE_ACCOUNT_NAME" --account-key "$ACCOUNT_KEY"
 }
 
-function terraformCreateWorkspaces {
+function terraformCreateWorkspace {
 
 	if [[ -z $ENVIRONMENTS ]]; then
 		echo "use terraform default workspace"
@@ -177,7 +178,7 @@ function startBootstrapping() {
 	azCreateBlobContainer
 	azCreateTerraformBackendTemp
 	terraformInit
-	terraformCreateWorkspaces
+	terraformCreateWorkspace
 
 }
 
