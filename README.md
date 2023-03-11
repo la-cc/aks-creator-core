@@ -35,7 +35,7 @@ a configuration file is required.
 Open the file `.igor.sh` in your preferred editor and use the following settings to configure `igor`:
 
     # select docker image
-    IGOR_DOCKER_IMAGE=ghcr.io/la-cc/aks-creator-core:0.0.1
+    IGOR_DOCKER_IMAGE=ghcr.io/la-cc/aks-creator-core:0.0.2
     IGOR_DOCKER_COMMAND=                                  # run this command inside the docker container
     IGOR_DOCKER_PULL=0                                    # force pulling the image before starting the container (0/1)
     IGOR_DOCKER_RM=1                                      # remove container on exit (0/1)
@@ -62,7 +62,7 @@ The following workflow is recommended as part of a aks cluster creation.
 | [2](#FillMissing)        | Fill missing fields in configuration file.                                    | yes      | -                              |
 | [3](#TemplateConfig)     | Template the whole aks platform folder structure.                             | yes      | `config-template`              |
 | [4](#ConfigAzureBackend) | Allow you configure the azure backend to save the remote state for terraform. | no       | `config-azure-backend`         |
-| [5](#Terraform)          | Create the AKS Cluster with needed context.                                   | yes      | `terrform` (version >= 1.4.0") |
+| [5](#Terraform)          | Create the AKS Cluster with needed context.                                   | yes      | `terrform` (version >= 1.3.0") |
 
 ### <a id="InitConfig"></a>1. Initialize empty configuration file
 
@@ -70,7 +70,7 @@ The following workflow is recommended as part of a aks cluster creation.
 
 Create an empty `config.yaml`.
 This already contains the necessary structure and placeholders for the values, as required in the following step.
-To do so simply execute the script:
+To do so simply execute the script (from inside the aks-creator-core container):
 
     config-init
 
@@ -90,7 +90,7 @@ You can get more information from [00. Configuration Options for `config.yaml`](
 
 - `config.yaml` of [1. 1. Get configuration file config.yaml](#GetConfig)
 
-To do so simply execute the script:
+To do so simply execute the script (from inside the aks-creator-core container):
 
     config-template
 
@@ -103,7 +103,7 @@ To do so simply execute the script:
 
 The easiest way is to fill the file `.backend.env` with the necessary values.
 
-Then execute the script:
+Then execute the script (from inside the aks-creator-core container):
 
     config-azure-backend
 
@@ -120,7 +120,7 @@ You can also start the script with interactive mode:
 
 ### 5.1 Terraform Apply + Azure Backend
 
-If go through the step [4. Create a Azure Backend for Terraform State (Optional)](#ConfigAzureBackend) then you need to execute the following commands:
+If go through the step [4. Create a Azure Backend for Terraform State (Optional)](#ConfigAzureBackend) then you need to execute the following commands (from inside the aks-creator-core container or local terraform binary):
 
     terraform init
     terraform select workspace <STAGE>
@@ -132,9 +132,12 @@ If the plan is fine for you, then apply it with:
 
 ### 5.2 Terraform Apply + Local Backend
 
-If you don't create azure backend then execute the following commands:
+If you don't create azure backend then execute the following commands (from inside the aks-creator-core container or local terraform binary):
 
     terraform init
+    #terraform version < 1.4.*
+    terraform workspace new <STAGE>
+    #terraform version  >= 1.4.*
     terraform workspace select -or-create <STAGE>
     terraform plan -var-file=env/<STAGE>/terraform.tfvars
 
