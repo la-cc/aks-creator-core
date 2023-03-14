@@ -8,3 +8,6 @@ clusters:
     stage: <development>
     azure_public_dns: {}
     node_pools: {}
+
+# Azure Devops Pipeline related data
+azure_devops_pipeline: {}

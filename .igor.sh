@@ -1,5 +1,5 @@
 # select docker image
-IGOR_DOCKER_IMAGE=ghcr.io/la-cc/aks-creator-core:0.0.2
+IGOR_DOCKER_IMAGE=ghcr.io/la-cc/aks-creator-core:0.0.2-azure-devops
 IGOR_DOCKER_COMMAND=            # run this command inside the docker container
 IGOR_DOCKER_PULL=0              # force pulling the image before starting the container (0/1)
 IGOR_DOCKER_RM=1                # remove container on exit (0/1)

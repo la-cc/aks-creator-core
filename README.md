@@ -162,6 +162,9 @@ clusters:
     stage: <development>
     azure_public_dns: {}
     node_pools: {}
+
+# Azure Devops Pipeline related data
+azure_devops_pipeline: {}
 ```
 
 ### Maximum possible configuration:
@@ -192,4 +195,9 @@ clusters:
           min_count: <1>
           max_count: <3>
           node_count: <2>
+
+# Azure Devops Pipeline related data
+azure_devops_pipeline:
+  enable: <true>
+  library_group: <tkc-fleet>
 ```
