@@ -3,6 +3,7 @@ module "resource_group" {
 
   name     = format("rg-%s-%s", var.name, terraform.workspace)
   location = var.location
+  tags     = var.tags
 
 }
 
