@@ -31,9 +31,9 @@ stages:
         steps:
           - checkout: self
           - script: |
-              terraform -chdir=platform init
-              terraform -chdir=platform workspace select ${{ variables.environment }}
-              terraform -chdir=platform validate
+              terraform -chdir=platform/main init
+              terraform -chdir=platform/main workspace select -or-create ${{ variables.environment }}
+              terraform -chdir=platform/main validate
             name: "ValidateTerraform"
             displayName: "Validate Terraform"
             env:
@@ -55,7 +55,7 @@ stages:
           - script: |
               mkdir -p platform/build
               terraform -chdir=platform/main init
-              terraform -chdir=platform/main workspace select ${{ variables.environment }}
+              terraform -chdir=platform/main workspace select -or-create ${{ variables.environment }}
               terraform -chdir=platform/main plan -var-file=env/${{ variables.environment }}/terraform.tfvars -out=$(Build.SourceVersion).plan
               cp platform/main/$(Build.SourceVersion).plan platform/main/build/
             name: "PlanTerraform"
@@ -87,7 +87,7 @@ stages:
                 - script: |
                     cp $(Pipeline.Workspace)/$(Build.SourceVersion).plan/$(Build.SourceVersion).plan platform/main/
                     terraform -chdir=platform/main init
-                    terraform -chdir=platform/main workspace select ${{ variables.environment }}
+                    terraform -chdir=platform/main workspace select -or-create ${{ variables.environment }}
                     terraform -chdir=platform/main apply $(Build.SourceVersion).plan
                   name: "ApplyTerraform"
                   displayName: "Terraform Apply"
