@@ -54,10 +54,10 @@ stages:
           - checkout: self
           - script: |
               mkdir -p platform/build
-              terraform -chdir=platform init
-              terraform -chdir=platform workspace select ${{ variables.environment }}
-              terraform -chdir=platform plan -var-file=${{ variables.environment }}/terraform.tfvars -out=$(Build.SourceVersion).plan
-              cp platform/$(Build.SourceVersion).plan platform/build/
+              terraform -chdir=platform/main init
+              terraform -chdir=platform/main workspace select ${{ variables.environment }}
+              terraform -chdir=platform/main plan -var-file=env/${{ variables.environment }}/terraform.tfvars -out=$(Build.SourceVersion).plan
+              cp platform/main/$(Build.SourceVersion).plan platform/main/build/
             name: "PlanTerraform"
             displayName: "Terraform Plan"
             env:
@@ -65,7 +65,7 @@ stages:
               ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-          - publish: $(Build.SourcesDirectory)/platform/build
+          - publish: $(Build.SourcesDirectory)/platform/main/build
             artifact: $(Build.SourceVersion).plan
 {% endraw %}
   - stage: apply
@@ -85,10 +85,10 @@ stages:
                 - download: current
                   artifact: $(Build.SourceVersion).plan
                 - script: |
-                    cp $(Pipeline.Workspace)/$(Build.SourceVersion).plan/$(Build.SourceVersion).plan platform/
-                    terraform -chdir=platform init
-                    terraform -chdir=platform workspace select ${{ variables.environment }}
-                    terraform -chdir=platform apply $(Build.SourceVersion).plan
+                    cp $(Pipeline.Workspace)/$(Build.SourceVersion).plan/$(Build.SourceVersion).plan platform/main/
+                    terraform -chdir=platform/main init
+                    terraform -chdir=platform/main workspace select ${{ variables.environment }}
+                    terraform -chdir=platform/main apply $(Build.SourceVersion).plan
                   name: "ApplyTerraform"
                   displayName: "Terraform Apply"
                   env:

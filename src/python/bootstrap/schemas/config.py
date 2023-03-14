@@ -39,7 +39,7 @@ config_schema = Schema({
 
     Optional("azure_devops_pipeline"): {
         Optional("enable"): bool,
-        Optional("library_group", default="argocd-cockpit"): str,
+        Optional("library_group"): str,
 
     }
 })
