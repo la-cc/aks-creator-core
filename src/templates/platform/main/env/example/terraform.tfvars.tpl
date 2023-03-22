@@ -6,6 +6,9 @@ orchestrator_version = "{{ cluster.orchestrator_version }}"
 name                 = "{{ cluster.name }}"
 node_pool_count      = "{{ cluster.node_pool_count }}"
 vm_size              = "{{ cluster.vm_size }}"
+local_account_disabled = true
+admin_list             = []
+
 {% if cluster.node_pools.enable_node_pools %}
 enable_node_pools    = "{{ cluster.node_pools.enable_node_pools |lower }}"
 

@@ -20,6 +20,39 @@ variable "location" {
 
 }
 
+variable "enable_aad_rbac" {
+  type        = bool
+  default     = true
+  description = "Is Role Based Access Control based on Azure AD enabled?"
+
+}
+
+variable "admin_list" {
+  type        = list(string)
+  default     = []
+  description = "If rbac is enabled, the default admin will be set over aad groups"
+
+}
+
+variable "local_account_disabled" {
+  type        = bool
+  default     = false
+  description = <<-EOT
+  If true local accounts will be disabled. Defaults to false.
+  When deploying an AKS Cluster, local accounts are enabled by default.
+  Even when enabling RBAC or Azure Active Directory integration, --admin access still exists, essentially as a non-auditable backdoor option.
+  With this in mind, AKS offers users the ability to disable local accounts via a flag, disable-local-accounts.
+  A field, properties.disableLocalAccounts, has also been added to the managed cluster API to indicate whether the feature has been enabled on the cluster.
+  See the documentation for more information:  https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts"
+  EOT
+}
+
+variable "load_balancer_sku" {
+  type        = string
+  default     = "basic"
+  description = "Specifies the SKU of the Load Balancer used for this Kubernetes Cluster. Possible values are basic and standard. Defaults to standard"
+}
+
 {% if cluster.azure_public_dns.enable %}
 variable "azure_cloud_zone" {
 
