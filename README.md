@@ -91,7 +91,7 @@ To do so simply execute the script (from inside the aks-creator-core container):
 
     config-init
 
-You will get a `config.yaml` that can
+You will get a `config.yaml` that can be filled by you.
 
 ### <a id="FillMissing"></a>2. Fill missing fields in `config.yaml`
 
